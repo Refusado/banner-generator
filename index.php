@@ -1,6 +1,7 @@
 <?php
 
-$donators = [
+// ATRIBUIÇÃO DE VALORES DINÂMICOS
+$participants = [
     'Refused#0010',
     'Phmetro#0010',
     'Digo20games',
@@ -9,6 +10,9 @@ $donators = [
     'Soft#1388',
     'Star#8558',
     'Zeroclown',
+    'Refused#0010',
+    'Phmetro#0010',
+    'Digo20games',
     'Yukari#6827',
     'Rox#5618',
     'Soft#1388',
@@ -17,16 +21,20 @@ $donators = [
 ];
 
 $winners = [
-    'Refusedmito#0010',
-    'Refusedamassa#0000',
+    'Refused#0010',
+    'Phmetro#0010',
 ];
 
 $backgroundDir  = __DIR__ . '/img/base2.png';
 $imageDir       = __DIR__ . '/img/mouse.png';
 $image2Dir      = __DIR__ . '/img/fur.png';
 
-$textColor = [0, 0, 0];
+$participantsColor  = [60, 41, 6];
+$winnersColor       = [146, 93, 219];
+$winnersStrokeColor = [5, 4, 6];
+$winnersStrokeWidth = 2;
 
+// CONFIGURAÇÕES AUTOMATICAS DE ATRIBUIÇÃO
 define('WIDTH', getimagesize($backgroundDir)[0]);
 define('HEIGHT', getimagesize($backgroundDir)[1]);
 
@@ -90,7 +98,7 @@ $px2  = 400;
 $py2  = $py;
 $columnMax  = 10;
 
-for ($i = 0; $i < count($donators); $i++) {
+for ($i = 0; $i < count($participants); $i++) {
     if ($i == $columnMax) {
         $px = $px2;
         $py = $py2;
@@ -102,9 +110,9 @@ for ($i = 0; $i < count($donators); $i++) {
         0,
         $px,
         $py,
-        imagecolorallocate($banner, $textColor[0], $textColor[1], $textColor[2]),
+        imagecolorallocate($banner, ...$participantsColor),
         FONT_ATMA_BOLD,
-        $donators[$i],
+        $participants[$i],
     );
 
     $py += 30;
@@ -112,45 +120,102 @@ for ($i = 0; $i < count($donators); $i++) {
 
 // INSERINDO E CONFIGURANDO NOME DO PRIMEIRO VENCEDOR
 $text       = $winners[0];
-$color      = [0, 0, 0];
 $fontFamily = FONT_SOOPAFRESH;
-$fontsize   = 16;
+$fontsize   = 20;
 $angle      = 5;
 
 $px         = 792;
-$py         = 284;
+$py         = 260;
 
-imagettftext(
+$textColor = imagecolorallocate($banner, ...$winnersColor);
+$strokeColor = imagecolorallocate($banner, ...$winnersStrokeColor);
+
+imagettfstroketext(
     $banner,
     $fontsize,
     $angle,
-    $px - (imageftbbox($fontsize, 0, $fontFamily, $text)[2] / 2),
+    $px,
     $py,
-    imagecolorallocate($banner, $color[0], $color[1], $color[2]),
+    $textColor,
+    $strokeColor,
     $fontFamily,
     $text,
+    $winnersStrokeWidth
 );
 
 // INSERINDO E CONFIGURANDO NOME DO SEGUNDO VENCEDOR
 $text       = $winners[1];
-$color      = [0, 0, 0];
 $fontFamily = FONT_SOOPAFRESH;
-$fontsize   = 18;
+$fontsize   = 20;
 $angle      = -5;
 
 $px         = 792;
 $py         = 540;
 
-imagettftext(
+$textColor = imagecolorallocate($banner, ...$winnersColor);
+$strokeColor = imagecolorallocate($banner, ...$winnersStrokeColor);
+imagettfstroketext(
     $banner,
     $fontsize,
     $angle,
-    $px - (imageftbbox($fontsize, 0, $fontFamily, $text)[2] / 2),
+    $px,
     $py,
-    imagecolorallocate($banner, $color[0], $color[1], $color[2]),
+    $textColor,
+    $strokeColor,
     $fontFamily,
     $text,
+    $winnersStrokeWidth
 );
+
+// FUNÇÃO PARA A CRIAÇÃO DE TEXTOS COM BORDAS
+function imagettfstroketext(
+    $srcImage,
+    $fontSize,
+    $angle,
+    $px,
+    $py,
+    $textColor,
+    $strokeColor,
+    $fontFamily,
+    $text,
+    $strokeWidth
+) {
+    for ($c1 = ($px - abs($strokeWidth)); $c1 <= ($px + abs($strokeWidth)); $c1++) {
+        for ($c2 = ($py - abs($strokeWidth)); $c2 <= ($py + abs($strokeWidth)); $c2++) {
+            imagettftext(
+                $srcImage,
+                $fontSize,
+                $angle,
+                $c1 - (imageftbbox(
+                    $fontSize,
+                    0,
+                    $fontFamily,
+                    $text
+                )[2] / 2),
+                $c2,
+                $strokeColor,
+                $fontFamily,
+                $text
+            );
+        }
+    }
+
+    return imagettftext(
+        $srcImage,
+        $fontSize,
+        $angle,
+        $px - (imageftbbox(
+            $fontSize,
+            0,
+            $fontFamily,
+            $text
+        )[2] / 2),
+        $py,
+        $textColor,
+        $fontFamily,
+        $text
+    );
+}
 
 header('Content-type: image/png');
 imagepng($banner);
