@@ -21,8 +21,8 @@ $participants = [
 ];
 
 $winners = [
-    'Refused#0010',
-    'Phmetro#0010',
+    'Soft#1388',
+    'Digo20games',
 ];
 
 $backgroundDir  = __DIR__ . '/img/base2.png';
@@ -217,5 +217,32 @@ function imagettfstroketext(
     );
 }
 
-header('Content-type: image/png');
-imagepng($banner);
+imagepng($banner, __DIR__ . '/img/final.png');
+
+echo "<style>
+    body {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        width: 100vw;
+        height: 100vh;
+        background-color: #592D00;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    img {
+        transition: 350ms;
+    }
+    img:hover {
+        transform: scale(1.014);
+    }
+    </style>";
+
+echo "<a href='img/final.png''>";
+
+echo "<img
+    style='max-width: 100vw;'
+    src='img/final.png'>";
+
+echo "</a>";

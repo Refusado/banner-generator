@@ -4,7 +4,7 @@
 
 ----
 
-<img src="img/example-result.png">
+<img src="img/final.png">
 
 ----
 
@@ -17,4 +17,11 @@
 - Imagem do segundo prêmio;
 - Vencedor do segundo prêmio;
 - Fontes do texto na lista de participantes;
-- Fonte do e demais configurações no texto dos participantes;
+- Fonte e demais configurações no texto dos vencedores;
+
+<!--
+- CRIAR PÁGINA WEB
+- ATUALIZAR README (IMAGEM)
+- ADICIONAR MORANGOS E QUEIJOS
+- ARMAZENAR CONFIGURAÇÕES
+-->
